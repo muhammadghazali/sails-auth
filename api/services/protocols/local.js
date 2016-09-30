@@ -34,7 +34,6 @@ exports.register = function (user, next) {
  */
 exports.createUser = function (_user, next) {
   var password = _user.password;
-  delete _user.password;
 
   return sails.models.user.create(_user, function (err, user) {
     if (err) {
@@ -43,7 +42,7 @@ exports.createUser = function (_user, next) {
       if (err.code === 'E_VALIDATION') {
         return next(new SAError({originalError: err}));
       }
-      
+
       return next(err);
     }
 
@@ -56,7 +55,7 @@ exports.createUser = function (_user, next) {
         if (err.code === 'E_VALIDATION') {
           err = new SAError({originalError: err});
         }
-        
+
         return user.destroy(function (destroyErr) {
           next(destroyErr || err);
         });
